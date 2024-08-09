@@ -9,6 +9,7 @@ This project is a microservice for Multi-Factor Authentication (MFA) built with 
 - **Send MFA Code:** An API endpoint to generate and send a unique, time-sensitive MFA code to a user's email.
 - **Verify MFA Code:** An API endpoint to verify the MFA code provided by the user.
 - **Security:** MFA codes are unique, time-sensitive, and securely stored in Redis.
+- **The rate-limiting**  feature in the MFA service is implemented using Redis to control the frequency of requests for generating and verifying MFA codes. This feature is crucial for preventing abuse, such as excessive requests that could lead to security vulnerabilities or degrade service performance.
 
 ## Prerequisites
 
@@ -37,7 +38,7 @@ This will start:
 - **MFA Microservice** on `http://localhost:8080`
 - **Redis** on `localhost:6379`
 
-### 4. Testing the Endpoints
+### 3. Testing the Endpoints
 
 You can test the API endpoints using tools like Postman or `curl`.
 
