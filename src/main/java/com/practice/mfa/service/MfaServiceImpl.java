@@ -39,12 +39,12 @@ public class MfaServiceImpl implements MfaService {
         return storedCode != null && storedCode.equals(code);
     }
 
-    private String generateMfaCode(int length) {
+    public String generateMfaCode(int length) {
         SecureRandom secureRandom = new SecureRandom();
         StringBuilder code = new StringBuilder();
 
         for (int i = 0; i < length; i++) {
-            code.append(secureRandom.nextInt(10)); // Random digit between 0-9
+            code.append(secureRandom.nextInt(10));
         }
 
         return code.toString();

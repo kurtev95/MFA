@@ -35,8 +35,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-mail:3.3.2")
     implementation("org.springframework.data:spring-data-redis:3.3.2")
     implementation("io.lettuce:lettuce-core:6.4.0.RELEASE")
+    implementation("jakarta.validation:jakarta.validation-api:3.0.2")
 
-
+    // Test dependencies
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }
 
 tasks.withType<Test> {
