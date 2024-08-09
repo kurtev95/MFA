@@ -14,16 +14,24 @@ public class MfaServiceImpl implements MfaService {
 
     private final MailService mailService;
 
-    private static final int SECRET_CODE_LENGTH = 6;
+    private final RateLimitService rateLimitService;
 
-    public MfaServiceImpl(RedisTemplate<String, String> redisTemplate, MailService mailService) {
+    private static final int SECRET_CODE_LENGTH = 6;
+    private static final String RATE_LIMIT_SEND_PREFIX = "mfa:ratelimit:send:";
+    private static final String RATE_LIMIT_VERIFY_PREFIX = "mfa:ratelimit:verify:";
+    private static final String MFA_CODE_PREFIX = "mfa:code:";
+
+    public MfaServiceImpl(RedisTemplate<String, String> redisTemplate, MailService mailService, RateLimitService rateLimitService) {
         this.redisTemplate = redisTemplate;
         this.mailService = mailService;
+        this.rateLimitService = rateLimitService;
     }
 
-    public void sendMfaCode(String email) {
+    public void sendMfaCode(String email) throws RateLimitService.TooManyRequestsException {
+        rateLimitService.handleRateLimit(email,RATE_LIMIT_SEND_PREFIX);
+
         String mfaCode = generateMfaCode(SECRET_CODE_LENGTH);
-        redisTemplate.opsForValue().set(email, mfaCode, Duration.ofMinutes(5));
+        redisTemplate.opsForValue().set(MFA_CODE_PREFIX + email, mfaCode, Duration.ofMinutes(5));
 
         SendMessageDto sendMessageDto = new SendMessageDto(
                 email,
@@ -34,8 +42,10 @@ public class MfaServiceImpl implements MfaService {
         mailService.sendMessage(sendMessageDto);
     }
 
-    public boolean verifyMfaCode(String email, String code) {
-        String storedCode = redisTemplate.opsForValue().get(email);
+    public boolean verifyMfaCode(String email, String code) throws RateLimitService.TooManyRequestsException {
+        rateLimitService.handleRateLimit(email,RATE_LIMIT_VERIFY_PREFIX);
+
+        String storedCode = redisTemplate.opsForValue().get(MFA_CODE_PREFIX + email);
         return storedCode != null && storedCode.equals(code);
     }
 
