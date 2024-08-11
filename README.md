@@ -21,13 +21,13 @@ This project is a microservice for Multi-Factor Authentication (MFA) built with 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/mfa-microservice.git
-cd mfa-microservice
+git clone git clone https://github.com/kurtev95/MFA.git
+cd MFA
 ```
 
 ### 2. Build and Run the Application
 
-You can use Docker Compose to build and run the application, along with Redis and MailHog (if used for local testing).
+You can use Docker Compose to build and run the application, along with Redis.
 
 ```bash
 docker-compose up --build
