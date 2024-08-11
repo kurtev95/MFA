@@ -73,8 +73,4 @@ The `docker-compose.yml` file sets up the following services:
 
 ### Running Tests
 
-Unit tests are included to ensure the reliability of the microservice. To run the tests:
-
-```bash
-./mvnw test
-```
+Unit tests are included to ensure the reliability of the microservice.
